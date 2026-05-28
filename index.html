@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXON</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@300;400&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f5f2;
+    --bg2: #efede9;
+    --ink: #0f0e0c;
+    --ink-dim: #6b6860;
+    --red: #c0392b;
+    --red-dim: #f0e8e7;
+    --line: #dddbd7;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    border-bottom: 1px solid var(--line);
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-cta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--bg);
+    background: var(--ink);
+    border: none;
+    padding: 0.55rem 1.2rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover { background: var(--red); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    min-height: 520px;
+    border-bottom: 1px solid var(--line);
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+
+  .hero-left {
+    padding: 6rem 4rem;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .hero-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 6vw, 5.8rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .hero-bottom-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.08em;
+    padding-top: 3rem;
+    border-top: 1px solid var(--line);
+    margin-top: 3rem;
+  }
+
+  .hero-right {
+    padding: 6rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--ink-dim);
+    line-height: 1.75;
+    font-weight: 400;
+    max-width: 360px;
+  }
+
+  .hero-sub strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--line);
+    margin-top: auto;
+    padding-top: 3rem;
+  }
+
+  .pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .pipeline-step:last-child { border-bottom: none; }
+  .pipeline-step:hover { background: var(--red-dim); }
+
+  .step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+  }
+
+  .step-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .step-text strong {
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--line);
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+
+  .stat {
+    padding: 2.5rem 3rem;
+    border-right: 1px solid var(--line);
+    transition: background 0.25s ease;
+  }
+
+  .stat:last-child { border-right: none; }
+  .stat:hover { background: var(--bg2); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-num span { color: var(--red); }
+
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-desc {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+  }
+
+  .features { animation: fadeUp 0.9s 0.45s ease both; }
+
+  .features-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 1rem 4rem;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .features-header span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 2rem 4rem;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+    transition: background 0.2s ease;
+    cursor: default;
+  }
+
+  .feature-row:hover { background: var(--bg2); }
+
+  .feature-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .feature-desc {
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    padding-right: 2rem;
+  }
+
+  .feature-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    border: 1px solid var(--red);
+    padding: 0.3rem 0.7rem;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .cta-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--line);
+    animation: fadeUp 0.9s 0.6s ease both;
+  }
+
+  .cta-left {
+    padding: 5rem 4rem;
+    border-right: 1px solid var(--line);
+    background: var(--ink);
+  }
+
+  .cta-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    color: var(--bg);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .cta-left h2 em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .cta-left p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: #8a8880;
+    line-height: 1.7;
+  }
+
+  .cta-right {
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .cta-right label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .cta-right input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    outline: none;
+    padding: 0.75rem 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  .cta-right input::placeholder { color: var(--ink-dim); }
+
+  .cta-submit {
+    margin-top: 0.75rem;
+    background: var(--ink);
+    border: none;
+    padding: 1rem 2rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--bg);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    align-self: flex-start;
+  }
+
+  .cta-submit:hover { background: var(--red); }
+
+  footer {
+    padding: 1.75rem 4rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+  }
+
+  .footer-copy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-dim);
+    opacity: 0.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    nav, footer { padding: 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left, .hero-right { padding: 3rem 1.5rem; border-right: none; }
+    .hero-right { border-top: 1px solid var(--line); }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat { padding: 2rem 1.5rem; }
+    .features-header, .feature-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.5rem; }
+    .cta-section { grid-template-columns: 1fr; }
+    .cta-left, .cta-right { padding: 3rem 1.5rem; border-right: none; }
+    .cta-left { border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">AXON</div>
+  <div class="nav-right">
+    <span class="nav-tag">AI Signal Routing / Startups</span>
+    <a class="nav-cta" href="#">Get Early Access</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-label">// AI Pipeline Infrastructure</div>
+    <h1>Ship AI<br>Features<br><em>Faster.</em></h1>
+    <div class="hero-bottom-label">Trusted by early-stage teams building production AI products</div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-sub">Axon is AI signal routing for startups. Connect your <strong>data sources, models, and outputs</strong> into a single clean pipeline — so your team ships AI features in days, not quarters.</p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-dot"></div>
+        <div class="step-text"><strong>Input</strong> — Connect any data source or API</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-dot"></div>
+        <div class="step-text"><strong>Route</strong> — Axon signals to the right model</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-dot"></div>
+        <div class="step-text"><strong>Output</strong> — Clean, typed results to your product</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">3<span>×</span></div>
+    <div class="stat-label">Faster Shipping</div>
+    <div class="stat-desc">Teams ship AI features 3x faster vs building pipelines in-house.</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">1<span> SDK</span></div>
+    <div class="stat-label">One Integration</div>
+    <div class="stat-desc">One SDK connects every model, source, and output in your stack.</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">99<span>.9%</span></div>
+    <div class="stat-label">Reliability SLA</div>
+    <div class="stat-desc">Production-grade uptime your users and investors can count on.</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">&lt;<span>5</span>ms</div>
+    <div class="stat-label">Routing Latency</div>
+    <div class="stat-desc">Sub-5ms signal routing — invisible to your end users.</div>
+  </div>
+</div>
+
+<section class="features">
+  <div class="features-header">
+    <span>Feature</span>
+    <span>What it does</span>
+    <span>Status</span>
+  </div>
+  <div class="feature-row">
+    <div class="feature-name">Model Routing</div>
+    <div class="feature-desc">Automatically directs each request to the optimal model based on task type, cost, and latency targets.</div>
+    <div class="feature-tag">Live</div>
+  </div>
+  <div class="feature-row">
+    <div class="feature-name">Pipeline Builder</div>
+    <div class="feature-desc">Visual and code-first tools to wire up multi-step AI workflows without glue code.</div>
+    <div class="feature-tag">Live</div>
+  </div>
+  <div class="feature-row">
+    <div class="feature-name">Output Typing</div>
+    <div class="feature-desc">Structured, typed outputs from any model — no more parsing raw strings in production.</div>
+    <div class="feature-tag">Beta</div>
+  </div>
+  <div class="feature-row">
+    <div class="feature-name">Cost Controls</div>
+    <div class="feature-desc">Per-feature budgets, spend alerts, and automatic fallbacks when cost thresholds are hit.</div>
+    <div class="feature-tag">Coming Soon</div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-left">
+    <h2>Build<br><em>smarter</em><br>from day one.</h2>
+    <p>Join founders and engineers who stopped<br>reinventing AI infrastructure and started shipping.</p>
+  </div>
+  <div class="cta-right">
+    <div>
+      <label>Work Email</label>
+      <input type="email" placeholder="you@company.com" />
+    </div>
+    <div>
+      <label>Company / Product</label>
+      <input type="text" placeholder="What are you building?" />
+    </div>
+    <button class="cta-submit">Request Early Access →</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">AXON</div>
+  <div class="footer-copy">© 2025 Axon Infrastructure Inc. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
